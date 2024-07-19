@@ -42,44 +42,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBhJnyQr78f47nY_Igj_PGqEGM5i3Ec7do',
-    appId: '1:357999879430:android:4c5d355a5f0f0c34bfaa87',
-    messagingSenderId: '357999879430',
+    apiKey: 'X',
+    appId: 'X',
+    messagingSenderId: 'X',
     projectId: 'examplearchl-589c0',
     storageBucket: 'examplearchl-589c0.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCAeMfxfiJfQteahr-Ru4o3epizb3CJwbU',
-    appId: '1:357999879430:ios:789957897d302300bfaa87',
-    messagingSenderId: '357999879430',
+    apiKey: 'X',
+    appId: 'X',
+    messagingSenderId: 'X',
     projectId: 'examplearchl-589c0',
     storageBucket: 'examplearchl-589c0.appspot.com',
-    androidClientId:
-        '357999879430-4k1aadlnj0u5b9iivpcd8mikk2l9flo8.apps.googleusercontent.com',
-    iosClientId:
-        '357999879430-gprbcdl8818gn73ll5n174rvugkmdq7c.apps.googleusercontent.com',
+    androidClientId: 'X.apps.googleusercontent.com',
+    iosClientId: 'X.apps.googleusercontent.com',
     iosBundleId: 'com.example.verygoodcore.gym-pol',
   );
 
   static const FirebaseOptions androidDev = FirebaseOptions(
-    apiKey: 'AIzaSyBhJnyQr78f47nY_Igj_PGqEGM5i3Ec7do',
-    appId: '1:357999879430:android:4c5d355a5f0f0c34bfaa87',
+    apiKey: 'X',
+    appId: 'X',
     messagingSenderId: '357999879430',
     projectId: 'examplearchl-589c0',
-    storageBucket: 'examplearchl-589c0.appspot.com',
+    storageBucket: 'X-589c0.appspot.com',
   );
 
   static const FirebaseOptions iosDev = FirebaseOptions(
-    apiKey: 'AIzaSyCAeMfxfiJfQteahr-Ru4o3epizb3CJwbU',
-    appId: '1:357999879430:ios:c197d051faf4bbddbfaa87',
-    messagingSenderId: '357999879430',
+    apiKey: 'X',
+    appId: 'X',
+    messagingSenderId: 'X',
     projectId: 'examplearchl-589c0',
     storageBucket: 'examplearchl-589c0.appspot.com',
-    androidClientId:
-        '357999879430-4k1aadlnj0u5b9iivpcd8mikk2l9flo8.apps.googleusercontent.com',
-    iosClientId:
-        '357999879430-i85kbldrtga2j4ttsnf9vm1lau4poshe.apps.googleusercontent.com',
-    iosBundleId: 'com.example.verygoodcore.gym-pol.dev',
+    androidClientId: 'X.apps.googleusercontent.com',
+    iosClientId: 'X.apps.googleusercontent.com',
+    iosBundleId: 'com.example.verygoodcore.gym-pol',
   );
 }
