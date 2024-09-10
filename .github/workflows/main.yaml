@@ -17,4 +17,10 @@ jobs:
        with:
          channel: 'stable'
      - run: flutter --version
+     - name: Install dependencies
+       run: flutter pub get
+     - name: Build Runner
+       run: flutter pub run build_runner build
+     - name: APK Build
+       run: flutter build apk --release
 
