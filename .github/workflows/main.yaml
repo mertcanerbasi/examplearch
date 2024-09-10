@@ -34,11 +34,10 @@ jobs:
         with:
           channel: 'stable'
 
-      # Decode the base64 encoded keystore and recreate my-release-key.jks
+      # Recreate the my-release-key.jks file from the base64 secret
       - name: Recreate my-release-key.jks
         run: |
-          echo ${{ secrets.ANDROID_KEYSTORE_BASE64 }} | base64 --decode > $HOME/my-release-key.jks
-
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > $HOME/my-release-key.jks
 
       # Set environment variables for keystore
       - name: Set environment variables for keystore
