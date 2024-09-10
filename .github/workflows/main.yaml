@@ -28,11 +28,27 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wget tar unzip
+          
+          # Download command-line tools
           wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O commandlinetools.zip
-          mkdir -p $HOME/Android/cmdline-tools/latest
-          unzip commandlinetools.zip -d $HOME/Android/cmdline-tools/latest
+          
+          # Create the cmdline-tools folder structure
+          mkdir -p $HOME/Android/cmdline-tools
+          
+          # Unzip into a temporary folder
+          unzip commandlinetools.zip -d $HOME/Android/cmdline-tools/temp
+          
+          # Move the unzipped content into the 'latest' folder
+          mv $HOME/Android/cmdline-tools/temp/cmdline-tools $HOME/Android/cmdline-tools/latest
+          
+          # Clean up the temporary folder
+          rm -rf $HOME/Android/cmdline-tools/temp
+          
+          # Set environment variables for Android SDK
           export ANDROID_HOME=$HOME/Android
           export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+          
+          # Install required SDK components
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0"
 
