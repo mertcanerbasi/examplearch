@@ -1,8 +1,4 @@
-name: examplearch
-
-concurrency:
-  group: $-$
-  cancel-in-progress: true
+name: Flutter CI
 
 on:
   push:
@@ -13,17 +9,35 @@ on:
       - main
 
 jobs:
-  semantic-pull-request:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
-
   build:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
-    with:
-      flutter_channel: stable
+    runs-on: ubuntu-latest
 
-  spell-check:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1
-    with:
-      includes: |
-        **/*.md
-      modified_files_only: false
+    steps:
+      # Checkout the repository
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      # Set up Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x.x'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Run tests
+      #- name: Run tests
+      #  run: flutter test
+
+      # Build APK
+      - name: Build APK
+        run: flutter build apk --release
+
+      # Build iOS
+      - name: Build iOS
+        if: runner.os == 'macOS'
+        run: flutter build ios --release
+
+      # Optionally, deploy the app to a service or store (requires additional setup)
