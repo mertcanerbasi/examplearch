@@ -28,17 +28,17 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wget tar unzip
-          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-          mkdir -p $HOME/Android/cmdline-tools
-          unzip cmdline-tools.zip -d $HOME/Android/cmdline-tools
+          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O commandlinetools.zip
+          mkdir -p $HOME/Android/cmdline-tools/latest
+          unzip commandlinetools.zip -d $HOME/Android/cmdline-tools/latest
           export ANDROID_HOME=$HOME/Android
-          export PATH=$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools:$PATH
-          yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses
-          yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0"
+          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0"
 
       # Accept Android SDK licenses
       - name: Accept Android SDK Licenses
-        run: yes | $HOME/Android/cmdline-tools/bin/sdkmanager --licenses
+        run: yes | $HOME/Android/cmdline-tools/latest/bin/sdkmanager --licenses
 
       # Verify Flutter and Android SDK versions
       - name: Verify Flutter & Android Setup
