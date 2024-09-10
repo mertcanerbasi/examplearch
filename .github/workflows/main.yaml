@@ -9,18 +9,51 @@ on:
       - main
 
 jobs:
- build:
-   runs-on: ubuntu-latest
-   steps:
-     - uses: actions/checkout@v3
-     - uses: subosito/flutter-action@v2
-       with:
-         channel: 'stable'
-     - run: flutter --version
-     - name: Install dependencies
-       run: flutter pub get
-     - name: Build Runner
-       run: flutter pub run build_runner build --delete-conflicting-outputs
-     - name: APK Build
-       run: flutter build appbundle --flavor development --target lib/main_development.dart
+  build:
+    runs-on: ubuntu-latest
 
+    steps:
+      # Checkout the code from the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Set up Flutter
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      # Install Android SDK and dependencies
+      - name: Install Android SDK
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget tar unzip
+          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+          mkdir -p $HOME/Android/cmdline-tools
+          unzip cmdline-tools.zip -d $HOME/Android/cmdline-tools
+          export ANDROID_HOME=$HOME/Android
+          export PATH=$ANDROID_HOME/cmdline-tools/bin:$ANDROID_HOME/platform-tools:$PATH
+          yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_HOME --licenses
+          yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0"
+
+      # Accept Android SDK licenses
+      - name: Accept Android SDK Licenses
+        run: yes | $HOME/Android/cmdline-tools/bin/sdkmanager --licenses
+
+      # Verify Flutter and Android SDK versions
+      - name: Verify Flutter & Android Setup
+        run: |
+          flutter --version
+          flutter doctor
+
+      # Install Flutter dependencies
+      - name: Install Flutter Dependencies
+        run: flutter pub get
+
+      # Generate code using build_runner
+      - name: Build Runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      # Build the APK or AppBundle
+      - name: Build AppBundle
+        run: flutter build appbundle --flavor development --target lib/main_development.dart
