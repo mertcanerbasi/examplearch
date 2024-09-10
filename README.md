@@ -2,7 +2,7 @@
   <img src="https://cdn-icons-png.flaticon.com/512/6295/6295417.png" width="100" />
 </p>
 <p align="center">
-    <h1 align="center">DEFINEX</h1>
+    <h1 align="center">EXAMPLE ARCH</h1>
 </p>
 <p align="center">
 	<img src="https://img.shields.io/github/license/mertcanerbasi/examplearch?style=flat&color=0080ff" alt="license">
@@ -207,6 +207,88 @@ flutter build ipa --flavor development --target lib/main_development.dart
 flutter build ipa --flavor staging --target lib/main_staging.dart
 flutter build ipa --flavor production --target lib/main_production.dart 
 ```
+
+## CI/CD Pipeline 
+
+## Prerequisites
+
+1.  Flutter SDK
+2.  GitHub repository with GitHub Actions enabled
+3.  Java 17 installed (for Android build)
+
+## Generate a Keystore
+
+1. If you haven't already generated a keystore, follow these steps to create one. This keystore will be used to sign your Android app for release.
+
+```sh
+keytool -genkey -v -keystore ~/path/to/my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-app-key 
+```
+
+~/path/to/my-release-key.jks: The path where the keystore will be saved.
+
+my-app-key: The alias for your key.
+
+You will be prompted for the keystore and key passwords. Remember these values for later steps.
+
+
+## Base64 Encode Your Keystore
+
+1.  Since GitHub Secrets only supports text data, you need to encode the keystore into Base64 so it can be securely stored in the repository secrets.
+
+For macOS/Linux:
+```sh
+    base64 ~/path/to/my-release-key.jks > my-release-key.jks.base64
+```
+
+For Windows (PowerShell):
+```sh
+    [Convert]::ToBase64String([IO.File]::ReadAllBytes("C:\path\to\my-release-key.jks")) > my-release-key.jks.base64
+```
+
+Open the generated my-release-key.jks.base64 file and copy its contents.
+
+## Add Secrets to Github
+
+Go to your GitHub repository, navigate to Settings > Secrets and variables > Actions, and create the following secrets:
+
+```sh
+Secret_Name	                            Description
+ANDROID_KEYSTORE_BASE64	                    The Base64-encoded content of the my-release-key.jks file.
+ANDROID_KEYSTORE_ALIAS	                    The alias for the key you created (e.g., my-app-key).
+ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD	    The password for the private key inside the keystore.
+ANDROID_KEYSTORE_PASSWORD	            The password for the keystore itself.
+```
+
+## Configure Github Actions Workflow
+
+Copy the contents of that repositories .github/workflows/main.yaml and create that file
+
+
+## Build the app locally
+To build the APK or AppBundle locally, make sure you have a key.properties file in your android folder with the following structure:
+
+```sh
+storePassword=your-keystore-password
+keyPassword=your-key-password
+keyAlias=my-app-key
+storeFile=/path/to/my-release-key.jks
+```
+
+then run build functions.
+
+
+## CI/CD Pipeline
+Once you push changes to the main branch or open a pull request, GitHub Actions will automatically:
+
+Set up Java and Flutter.
+Recreate the keystore from the Base64-encoded secret.
+Build the app in release mode and sign it with the keystore.
+Optionally upload the built AppBundle or APK as an artifact.
+You can find the output in the Actions tab in your GitHub repository.
+
+
+
+
 
 
 ---
