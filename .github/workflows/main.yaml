@@ -97,7 +97,7 @@ jobs:
 
       # Build the APK or AppBundle
       - name: Build AppBundle
-        run: flutter build appbundle --release
+        run: flutter build appbundle --flavor development --target lib/main_development.dart
 
       # Optional: Upload artifact (APK or AAB)
       - name: Upload AAB
