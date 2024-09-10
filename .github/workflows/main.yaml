@@ -24,11 +24,30 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
+      #Check Java version
+      - name: Check Java version
+        run: java -version
+
       # Set up Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+
+      # Decode the base64 encoded keystore and recreate my-release-key.jks
+      - name: Recreate my-release-key.jks
+        run: |
+          echo ${{ secrets.ANDROID_KEYSTORE_BASE64 }} | base64 --decode > $HOME/my-release-key.jks
+
+
+      # Set environment variables for keystore
+      - name: Set environment variables for keystore
+        run: |
+          echo "ANDROID_KEYSTORE_PATH=$HOME/my-release-key.jks" >> $GITHUB_ENV
+          echo "ANDROID_KEYSTORE_ALIAS=${{ secrets.ANDROID_KEYSTORE_ALIAS }}" >> $GITHUB_ENV
+          echo "ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD }}" >> $GITHUB_ENV
+          echo "ANDROID_KEYSTORE_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
+
 
       # Install Android SDK and dependencies
       - name: Install Android SDK
@@ -79,4 +98,11 @@ jobs:
 
       # Build the APK or AppBundle
       - name: Build AppBundle
-        run: flutter build appbundle --flavor development --target lib/main_development.dart
+        run: flutter build appbundle --release
+
+      # Optional: Upload artifact (APK or AAB)
+      - name: Upload AAB
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release.aab
+          path: build/app/outputs/bundle/release/app-release.aab
