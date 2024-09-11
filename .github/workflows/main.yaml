@@ -46,6 +46,23 @@ jobs:
           echo "ANDROID_KEYSTORE_ALIAS=${{ secrets.ANDROID_KEYSTORE_ALIAS }}" >> $GITHUB_ENV
           echo "ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD }}" >> $GITHUB_ENV
           echo "ANDROID_KEYSTORE_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
+        
+        
+      # Install Python and necessary libraries
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruamel.yaml
+
+      # Run Python script to update version in pubspec.yaml
+      - name: Update pubspec.yaml version
+        run: python update_version.py
+
 
 
       # Install Android SDK and dependencies
